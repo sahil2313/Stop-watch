@@ -1,8 +1,7 @@
 import react, { useEffect, useRef, useState } from "react"
 
 const StopWatch = ()=>{
-const [second , setSecond] = useState(0)
-const [minute , setMinute] = useState(0)
+const [elapsedTime , setElapsedTime] = useState(0)
 const [isActive , setIsActive] = useState(false)
 const intervalRef = useRef(0)
 
@@ -11,16 +10,9 @@ const intervalRef = useRef(0)
 useEffect(()=>{
  if(isActive){
     intervalRef.current = setInterval(()=>{
-        setSecond(prevSecond =>{
-            if(prevSecond === 59){
-                setMinute(prevMinute => prevMinute + 1)
-                return 0
-            }else{
-                return prevSecond + 1
-            }
-        })
+    setElapsedTime(prevElapsedTime => prevElapsedTime +1)
     },1000)
- }else if(!isActive && intervalRef.current){
+ }else{
     clearInterval(intervalRef.current)
  }
 
@@ -28,14 +20,19 @@ useEffect(()=>{
 },[isActive])
 
 const handleReset = ()=>{
-    setSecond(0)
-    setMinute(0)
     setIsActive(false)
+    setElapsedTime(0)
+}
+
+const timeFormat = (seconds)=>{
+    const minute = Math.floor(seconds / 60)
+    const remainingSeconds = seconds % 60
+    return `${minute}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`
 }
     return(
         <div >
             <h1>Stopwatch</h1>
-            <p>{`Time: ${String(minute)} : ${String(second).padStart(2 , "0")}`}</p>
+            <p>Time: {timeFormat(elapsedTime)}</p>
             <button onClick={()=> setIsActive(prevValue => !prevValue)}>{!isActive ? "Start" : "Stop"}</button>
             <button onClick={handleReset}>Reset</button>
         </div>
