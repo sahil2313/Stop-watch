@@ -35,7 +35,7 @@ const handleReset = ()=>{
     return(
         <div >
             <h1>Stopwatch</h1>
-            <p>Time: {minute} : {String(second).padStart(2 , "0")}</p>
+            <p>{`Time: ${String(minute)} : ${String(second).padStart(2 , "0")}`}</p>
             <button onClick={()=> setIsActive(prevValue => !prevValue)}>{!isActive ? "Start" : "Stop"}</button>
             <button onClick={handleReset}>Reset</button>
         </div>
